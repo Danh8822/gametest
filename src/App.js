@@ -31,6 +31,8 @@ function App() {
   const [gameOver, setGameOver] = useState(false);
   const [clickedCircle, setClickedCircle] = useState(null);
   const [buttonColor, setButtonColor] = useState('white');
+  const [statusMessage, setStatusMessage] = useState("LET'S PLAY");
+  const [statusColor, setStatusColor] = useState('black');
   const animationDuration = 0.3;
 
   useEffect(() => {
@@ -54,6 +56,8 @@ function App() {
     } else if (id !== nextExpected) {
       setGameOver(true);
       setTimerActive(false);
+      setStatusMessage('Game Over');
+      setStatusColor('red');
     }
   };
 
@@ -73,13 +77,17 @@ function App() {
     setClickedCircle(null);
     setTimerActive(true);
     setButtonColor('white');
+    setStatusMessage("LET'S PLAY");
+    setStatusColor('black');
   };
 
   useEffect(() => {
-    if (circles.length === 0 && !gameOver) {
+    if (circles.length === 0 && !gameOver && timerActive) {
       setTimerActive(false);
+      setStatusMessage('ALL CLEARED');
+      setStatusColor('green');
     }
-  }, [circles, gameOver]);
+  }, [circles, gameOver, timerActive]);
 
   return (
     <div style={{ padding: 20, textAlign: 'center',
@@ -90,8 +98,8 @@ function App() {
       margin: '2px auto',
       backgroundColor: '#eaeaea',
      }}>
-      <h2 style={{ color: gameOver ? 'red' : circles.length === 0 ? 'green' : 'black' }}>
-        {gameOver ? 'Game Over' : circles.length === 0 ? 'ALL CLEARED' : "LET'S PLAY"}
+      <h2 style={{ color: statusColor }}>
+        {statusMessage}
       </h2>
       <div style={{
         display: 'flex',
